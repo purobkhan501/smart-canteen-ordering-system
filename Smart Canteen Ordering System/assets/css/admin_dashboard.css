@@ -1,0 +1,98 @@
+body {
+    background-color: #f8fafc;
+    font-family: 'Inter', sans-serif;
+    color: #1e293b;
+}
+
+.header-nav {
+    background: linear-gradient(90deg, #AC2C0C 0%, #EB9604 100%);
+}
+
+.home-button{
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 20px;
+}
+
+.custom-nav-pills .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    padding: 8px 18px;
+    border-radius: 20px;
+    margin-right: 5px;
+    transition: 0.3s;
+}
+
+.custom-nav-pills .nav-link:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.custom-nav-pills .nav-link.active {
+    background-color: white !important;
+    color: #7c3aed !important;
+    font-weight: 600;
+}
+
+.main-content {
+    margin-top: 160px;
+    padding-bottom: 50px;
+}
+
+.stat-box, .content-box {
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.icon-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.bg-light-blue {
+     background-color: #eff6ff;
+}
+
+.btn-custom{
+    background: linear-gradient(90deg, #AC2C0C 0%, #EB9604 100%);
+    color: white;
+    border-radius: 10px;
+}
+.btn-custom:hover{
+    box-shadow: 0 8px 15px rgba(238, 200, 29, 0.3);
+    color: white;
+    background: #F68B1F;
+}
+
+.menu-item-card {
+    background: #ffffff;
+    transition: 0.2s;
+}
+.menu-item-card:hover {
+    border-color: #F68B1F !important;
+}
+
+.form-control, .form-select {
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    padding: 10px;
+}
+
+#img1{
+    height: 60px;
+    width: 60px;
+}
+#img2{
+    height: 60px;
+    width: 90px;
+}
+#img3{
+    height: 100px;
+    width: 150px;
+}

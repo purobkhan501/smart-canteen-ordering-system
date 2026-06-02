@@ -1,0 +1,70 @@
+body {
+    background-color: #f0f4f8;
+}
+
+.dashboard-header{
+    background: linear-gradient(90deg, #AC2C0C 0%, #EB9604 100%);
+    min-height: 250px;
+}
+
+.stat-card{
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 20px;
+    border-radius: 12px;
+    color: white;
+    text-align: center;
+}
+.order-card{
+    border-radius: 15px;
+    background-color: #BEDBFF;
+    border: 1px solid blueviolet;
+}
+
+.stat-card h2{ 
+    margin: 0; font-weight: bold; 
+}
+.stat-card p{ 
+    margin: 0; opacity: 0.9; font-size: 0.9rem; 
+}
+
+.status-dot {
+    font-size: 0.7rem;
+    vertical-align: middle;
+    padding: 4px 10px;
+}
+
+.nav-tabs-custom .nav-link {
+    color: white;
+    border: 1px solid white;
+    margin-right: 10px;
+    border-radius: 20px;
+    padding: 5px 20px;
+    font-size: 0.85rem;
+}
+
+.nav-tabs-custom .nav-link.active {
+    background-color: white !important;
+    color: #0d6efd !important;
+}
+
+.menu-item-card {
+    border: 1px solid #eef0f2;
+    border-radius: 12px;
+    
+}
+#img{
+    width: 30%;
+    height: 30%;
+}
+
+.custom-switch {
+    width: 2.5em !important;
+    height: 1.2em !important;
+    cursor: pointer;
+}
+
+.column-header {
+    font-weight: 600;
+    font-size: 0.9rem;
+}

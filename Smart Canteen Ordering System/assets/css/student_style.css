@@ -1,0 +1,172 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+body{
+    background-color: #F9FAFB;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(90deg, #AC2C0C 0%, #EB9604 100%);
+    padding: 20px;
+    color: white;
+    
+}
+.header-left{
+    display: flex;
+    gap:  10px;
+}
+.header-right{
+    display: flex;
+    gap: 10px;
+}
+.home-button{
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 20px;
+}
+#search-bar{
+    border-radius: 20px;
+    border: none;
+    padding: 8px 15px ;
+}
+.cart-icon{
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    
+}
+
+.catagories{
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    font-size: 20px;
+    font-weight: bold;
+}
+.cat-button{
+    border: none;
+    background-color: none;
+    font-weight: bold;
+    font-size: large;
+    text-align: center;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 20px;
+    text-decoration: none;
+
+}
+.cat-button:hover{
+    background-color: rgb(229, 235, 236);
+    color: #F68B1F;
+}
+
+.workflow{
+    margin: 20px auto;
+    padding: 0 20px;
+}
+.special{
+    margin: 20px;
+}
+.section-title{
+    margin-bottom: 20px;
+}
+.badge-tag{
+    font-size: 15px;
+    background: #ffeeba;
+    color: #856404;
+    padding: 2px 8px;
+    border-radius: 5px;
+    vertical-align: middle;
+}
+.special-card{
+    background-color: white;
+    margin-top: 20px;
+    width: 350px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+#special-img{
+    width: 100%;
+}
+.price-tag{
+    padding: 10px;
+}
+.special-label{
+    padding: 10px;
+}
+
+.special-info{
+    padding: 10px;
+}
+
+.pre-order-stats{
+    display: flex;
+    justify-content: space-between;
+}
+#progress-bar{
+    width: 100%;
+    height: 20px;
+}
+#pre-order-button{
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(90deg, #AC2C0C 0%, #EB9604 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.food-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+    margin: 20px;
+}
+.food-card{
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    
+}
+
+#food-img {
+    height: 180px;
+    width: 100%;
+    object-fit: cover;
+}
+#food-img:hover {
+    transform: translateY(-5px);
+}
+.food-details{
+    padding: 10px;
+}
+    
+.price-row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #008236;
+    font-weight: bold;
+}
+    
+.plus-button{
+    background-color: #00A63E;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}

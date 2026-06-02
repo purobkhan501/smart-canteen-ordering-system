@@ -1,0 +1,1 @@
+<?php include "../includes/db.php"; $res = mysqli_query($conn, "SHOW COLUMNS FROM menu_item"); while($row = mysqli_fetch_assoc($res)) { print_r($row); } echo "\n\n"; $res2 = mysqli_query($conn, "SHOW COLUMNS FROM category"); while($row = mysqli_fetch_assoc($res2)) { print_r($row); } ?>

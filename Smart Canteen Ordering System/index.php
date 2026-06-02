@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UIU Smart Canteen - Select Role</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <div class="main-wrapper">
+        <header class="hero-section text-center text-white pt-5 pb-5">
+            <div class="container">
+                <div class="logo mb-2">
+                    <h1 class="fw-bold">UIU Smart Canteen</h1>
+                    <p class="lead">United International University</p>
+                </div>
+                <p class="mb-4">Order your favourite food digitally — fast, easy & cashless</p>
+                
+                <div class="d-flex justify-content-center gap-2 flex-wrap">
+                    <span class="badge rounded-pill border px-3 py-2"><i class="bi bi-clock"></i> Live Tracking</span>
+                    <span class="badge rounded-pill border px-3 py-2"><i class="bi bi-star"></i> Pre-Orders</span>
+                    <span class="badge rounded-pill border px-3 py-2"><i class="bi bi-ticket-perforated"></i> Digital Token</span>
+                </div>
+            </div>
+        </header>
+
+        <section class="container role-container">
+            <h2 class="text-center mt-5 mb-5 fw-bold text-uppercase ">Select Your Role</h2>
+            
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-4 col-sm-10">
+                    <div class="role-card text-center p-4 h-100">
+                        <div class="icon-box bg-light-blue mb-4">
+                            <i class="bi bi-bag-check text-success"></i>
+                        </div>
+                        <h3>Student</h3>
+                        <p class="text-muted mb-4">Browse menu, place orders, track status & get digital tokens</p>
+                        <a href="student/login.php" class="btn btn-success btn-custom w-100 py-2">Order Now →</a>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-10">
+                    <div class="role-card text-center p-4 h-100">
+                        <div class="icon-box bg-light-blue mb-4">
+                            <i class="bi bi-people text-primary"></i>
+                        </div>
+                        <h3>Canteen Staff</h3>
+                        <p class="text-muted mb-4">View live orders, manage stages & update order statuses</p>
+                        <a href="staff/login.php" class="btn btn-success btn-custom w-100 py-2">View Orders →</a>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-10">
+                    <div class="role-card text-center p-4 h-100">
+                        <div class="icon-box bg-light-blue mb-4">
+                            <i class="bi bi-shield-lock text-purple"></i>
+                        </div>
+                        <h3>Admin</h3>
+                        <p class="text-muted mb-4">Sales reports, menu management, analytics & promotions</p>
+                        <a href="admin/login.php" class="btn btn-success btn-custom w-100 py-2">Admin Panel →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="container mt-5 mb-5">
+            <div class="stats-bar d-flex justify-content-around align-items-center p-4 flex-wrap gap-4 text-center">
+                <div>
+                    <h4 class="fw-bold mb-0">32+</h4>
+                    <small class="text-muted">Menu Items</small>
+                </div>
+                <div class="vr d-none d-md-block"></div>
+                <div>
+                    <h4 class="fw-bold mb-0">5</h4>
+                    <small class="text-muted">Categories</small>
+                </div>
+                <div class="vr d-none d-md-block"></div>
+                <div>
+                    <h4 class="fw-bold mb-0">5 min</h4>
+                    <small class="text-muted">Min Wait Time</small>
+                </div>
+                <div class="vr d-none d-md-block"></div>
+                <div>
+                    <h4 class="fw-bold mb-0">10 orders</h4>
+                    <small class="text-muted">Pre-Order Threshold</small>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+</body>
+</html>
