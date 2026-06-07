@@ -50,6 +50,8 @@ if ($result) { while ($row = mysqli_fetch_assoc($result)) $orders[] = $row; }
                         <span class="fw-bold text-success me-3">৳<?php echo number_format($o['total_amount'], 0); ?></span>
                         <?php if ($o['status'] != 'Picked Up'): ?>
                         <a href="order_tracking.php?order_id=<?php echo $o['order_id']; ?>" class="btn btn-sm btn-outline-primary rounded-pill">Track <i class="bi bi-geo-alt"></i></a>
+                        <?php else: ?>
+                        <a href="rate_order.php?order_id=<?php echo $o['order_id']; ?>" class="btn btn-sm btn-outline-warning rounded-pill">Rate Items <i class="bi bi-star-fill"></i></a>
                         <?php endif; ?>
                     </div>
                 </div>

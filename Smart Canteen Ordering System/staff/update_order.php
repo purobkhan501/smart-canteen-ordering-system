@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id']) && isset($
     $order_id = (int)$_POST['order_id'];
     $status = mysqli_real_escape_string($conn, $_POST['status']);
     
-    $allowed_statuses = ['Pending', 'Preparing', 'Ready', 'Picked Up'];
+    $allowed_statuses = ['Pending', 'Preparing', 'Ready', 'Picked Up', 'Cancelled'];
     if (in_array($status, $allowed_statuses)) {
         // Update status
         $sql = "UPDATE orders SET status = '$status' WHERE order_id = $order_id";

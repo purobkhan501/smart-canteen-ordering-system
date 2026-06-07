@@ -26,7 +26,12 @@
                 </div>
             </div>
         </header>
-
+        <?php if (isset($_GET['account_deleted'])): ?>
+    <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+        Your account has been deleted. We're sad to see you go. If this was a mistake, please contact support.
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+       <?php endif; ?>
         <section class="container role-container">
             <h2 class="text-center mt-5 mb-5 fw-bold text-uppercase ">Select Your Role</h2>
             

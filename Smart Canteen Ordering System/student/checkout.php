@@ -15,11 +15,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Calculate total price
     foreach ($cart_items as $item_id => $quantity) {
-        $sql = "SELECT price FROM menu_item WHERE item_id = " . intval($item_id);
+        $sql = "SELECT m.price, d.percentage FROM menu_item m LEFT JOIN discount d ON m.item_id = d.item_id AND d.is_active = 1 WHERE m.item_id = " . intval($item_id);
         $result = mysqli_query($conn, $sql);
         if ($result && mysqli_num_rows($result) > 0) {
             $item = mysqli_fetch_assoc($result);
-            $total_amount += ($item['price'] * $quantity);
+            $price = $item['price'];
+            if (!empty($item['percentage'])) {
+                $price = $price - ($price * $item['percentage'] / 100);
+            }
+            $total_amount += ($price * $quantity);
         }
     }
 
@@ -40,11 +44,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Insert order items
         foreach ($cart_items as $item_id => $quantity) {
-            $sql = "SELECT price FROM menu_item WHERE item_id = " . intval($item_id);
+            $sql = "SELECT m.price, d.percentage FROM menu_item m LEFT JOIN discount d ON m.item_id = d.item_id AND d.is_active = 1 WHERE m.item_id = " . intval($item_id);
             $result = mysqli_query($conn, $sql);
             if ($result && mysqli_num_rows($result) > 0) {
                 $item = mysqli_fetch_assoc($result);
                 $unit_price = $item['price'];
+                if (!empty($item['percentage'])) {
+                    $unit_price = $unit_price - ($unit_price * $item['percentage'] / 100);
+                }
                 $item_query = "INSERT INTO order_item (order_id, item_id, quantity, unit_price) 
                                VALUES ('$order_id', '$item_id', '$quantity', '$unit_price')";
                 mysqli_query($conn, $item_query);

@@ -2,6 +2,28 @@
 require_once '../includes/auth.php';
 require_login();
 require_once '../includes/db.php';
+
+// Fetch special items (is_special = 1)
+$special_items = [];
+$sp_query = "SELECT m.*, c.name AS category_name 
+             FROM menu_item m 
+             JOIN category c ON m.category_id = c.category_id 
+             WHERE m.is_special = 1 AND m.is_available = 1";
+$sp_result = mysqli_query($conn, $sp_query);
+if ($sp_result) {
+    while ($row = mysqli_fetch_assoc($sp_result)) {
+        $special_items[] = $row;
+    }
+}
+
+// Fetch discounts for all items
+$discounts = [];
+$disc_res = mysqli_query($conn, "SELECT * FROM discount WHERE is_active = 1");
+if ($disc_res) {
+    while ($d = mysqli_fetch_assoc($disc_res)) {
+        $discounts[$d['item_id']] = $d['percentage'];
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,19 +31,23 @@ require_once '../includes/db.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard - UIU Canteen</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
     <link rel="stylesheet" href="../assets/css/student_style.css">
 </head>
 <body>
     <div class="header">
         <div class="header-left">
-            <a class="home-button btn btn-light" href="../index.php" role="button"> <i class="bi bi-arrow-left-circle"></i></a>
+            <a class="home-button btn btn-light" href="../index.php"><i class="bi bi-arrow-left-circle"></i></a>
             <h2>UIU Canteen</h2>
         </div>
         <div class="header-right"> 
             <input type="text" placeholder="Search food..." id="search-bar"> 
+            <a href="my_orders.php" class="btn btn-outline-primary btn-sm rounded-pill fw-bold"><i class="bi bi-clock-history"></i></a>
+            <a href="../includes/logout.php" class="btn btn-outline-danger btn-sm rounded-pill fw-bold"><i class="bi bi-box-arrow-right"></i></a>
+            <button type="button" class="btn btn-outline-danger btn-sm rounded-pill fw-bold ms-1" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+                   <i class="bi bi-trash"></i> Delete Account
+           </button>
             <a href="view_cart.php" class="cart-icon btn btn-light">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
                     <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
@@ -29,80 +55,121 @@ require_once '../includes/db.php';
                 <?php
                 $cart_count = 0;
                 if(isset($_SESSION['cart'])){
-                    foreach($_SESSION['cart'] as $qty) {
-                        $cart_count += $qty;
-                    }
+                    foreach($_SESSION['cart'] as $qty) $cart_count += $qty;
                 }
-                if($cart_count > 0) {
-                    echo "<span class='badge bg-danger rounded-pill'>$cart_count</span>";
-                }
+                if($cart_count > 0) echo "<span class='badge bg-danger rounded-pill'>$cart_count</span>";
                 ?>
             </a>
         </div>
     </div>
 
     <div class="catagories">
-        <a class="cat-button btn btn-light nav-link active" href="dashboard.php" role="button">All</a>
-        <a class="cat-button btn btn-light " href="./breakfast.php" role="button">Breakfast</a>
-        <a class="cat-button btn btn-light " href="./snacks.php" role="button">Snacks</a>
-        <a class="cat-button btn btn-light " href="./fast_food.php" role="button">Fast Food</a>
-        <a class="cat-button btn btn-light " href="./rice.php" role="button">Rice</a>
-        <a class="cat-button btn btn-light " href="./drinks.php" role="button">Drinks</a>
-        <a class="cat-button btn btn-light " href="./deals.php" role="button">Deals</a>
-        <a class="cat-button btn btn-light " href="./special.php" role="button">Special</a>
+        <a class="cat-button btn btn-light nav-link active" href="dashboard.php">All</a>
+        <a class="cat-button btn btn-light" href="breakfast.php">Breakfast</a>
+        <a class="cat-button btn btn-light" href="snacks.php">Snacks</a>
+        <a class="cat-button btn btn-light" href="fast_food.php">Fast Food</a>
+        <a class="cat-button btn btn-light" href="rice.php">Rice</a>
+        <a class="cat-button btn btn-light" href="drinks.php">Drinks</a>
+        <a class="cat-button btn btn-light" href="deals.php">Deals</a>
+        <a class="cat-button btn btn-light" href="special.php">Special</a>
     </div>
 
     <div class="workflow container-fluid">
-        <div class="special">
-            <h2 class="section-title">⭐ Special Pre-Order Items <span class="badge-tag">Pre-Order Required</span></h2>
-            <div class="special-card">
-                <div class="special-img">
-                    <img src="../assets/images/Kacchi.jpg" alt="Kacchi Biriyani" id="special-img">
-                    <span class="price-tag">৳210</span>
-                    <span class="special-label">⭐Special</span>
+        <!-- Special Items Section -->
+<div class="special">
+    <h2 class="section-title">⭐ Special Pre-Order Items <span class="badge-tag">Pre-Order Required</span></h2>
+    
+    <?php if(empty($special_items)): ?>
+        <p class="text-muted ms-3">No special pre-order items available at the moment.</p>
+    <?php else: ?>
+        <div class="row g-4">
+            <?php foreach($special_items as $sp): 
+                // Calculate current total pre-orders (quantity sum from pre_orders)
+                $count_res = mysqli_query($conn, "SELECT SUM(quantity) as total FROM pre_orders WHERE item_id = " . $sp['item_id']);
+                $cnt_row = mysqli_fetch_assoc($count_res);
+                $current_preorders = $cnt_row['total'] ?? 0;
+                $min_orders = $sp['min_preorders'] ?? 10;
+                $available_date = $sp['preorder_available_date'] ?? date('Y-m-d', strtotime('+1 day'));
+                $pct = ($min_orders > 0) ? min(100, ($current_preorders / $min_orders) * 100) : 0;
+                $can_preorder = (strtotime($available_date) > time());
+            ?>
+            <div class="col-md-6 col-lg-4">
+                <div class="special-card" style="width: 100%;">
+                    <div class="special-img">
+                        <img src="../assets/images/<?php echo htmlspecialchars($sp['image_url'] ?? 'default.jpg'); ?>" id="special-img">
+                        <span class="price-tag">৳<?php echo number_format($sp['price'], 0); ?></span>
+                        <span class="special-label">⭐Special</span>
+                    </div>
+                    <div class="special-info">
+                        <p><?php echo htmlspecialchars($sp['name']); ?>. Only made if <?php echo $min_orders; ?>+ pre-orders received!</p>
+                        <div class="pre-order-stats">
+                            <span><?php echo $current_preorders; ?> / <?php echo $min_orders; ?> pre-orders</span>
+                            <span>📅 <?php echo date('Y-m-d', strtotime($available_date)); ?></span>
+                        </div>
+                        <div class="progress-bar">
+                            <progress value="<?php echo $pct; ?>" max="100" id="progress-bar"></progress>
+                        </div>
+                        <div class="pre-order-button">
+                            <form action="pre_order.php" method="POST">
+                                <input type="hidden" name="menu_item_id" value="<?php echo $sp['item_id']; ?>">
+                                <!-- Optional quantity selector – add if needed -->
+                                <!-- <input type="number" name="quantity" value="1" min="1" style="width: 60px;"> -->
+                                <input type="submit" value="Pre-Order Now" id="pre-order-button" <?php echo !$can_preorder ? 'disabled' : ''; ?>>
+                            </form>
+                        </div>
+                        <?php if(!$can_preorder): ?>
+                            <small class="text-danger d-block mt-2">❌ Pre-order deadline passed</small>
+                        <?php endif; ?>
+                    </div>
                 </div>
-                <div class="special-info">
-                    <p>Premium Mutton Kacchi.Only made if 10+ pre-orders received!</p>
-                    <div class="pre-order-stats">
-                        <span>0 / 10 pre-orders</span>
-                        <span>📅 2026-05-04</span>
-                    </div>
-
-                    <div class="progress-bar">
-                        <progress value="0" max="100" id="progress-bar"></progress>
-                    </div>
-                    <div class="pre-order-button">
-                        <input type="button"  value="Pre-Order Now" id="pre-order-button">
-                    </div>
-
-                </div>
-                
-                
             </div>
+            <?php endforeach; ?>
         </div>
+    <?php endif; ?>
+</div>
         
-
-
+        <!-- Regular Food Grid -->
         <div class="food-grid">
             <?php
-            // Fetch all menu items
             $sql = "SELECT * FROM menu_item";
             $result = mysqli_query($conn, $sql);
             if ($result && mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
+                    $is_avail = isset($row['is_available']) ? $row['is_available'] : 1;
+                    $gray_class = ($is_avail == 0) ? 'grayscale' : '';
+                    $btn_disabled = ($is_avail == 0) ? 'disabled' : '';
+                    $btn_type = ($is_avail == 0) ? 'button' : 'submit';
+                    
+                    $original_price = $row['price'];
+                    $has_discount = isset($discounts[$row['item_id']]);
+                    $final_price = $original_price;
+                    if ($has_discount) {
+                        $final_price = $original_price - ($original_price * $discounts[$row['item_id']] / 100);
+                    }
                     ?>
-                    <div class="food-card">
+                    <div class="food-card <?php echo $gray_class; ?> position-relative">
+                        <?php if($has_discount): ?>
+                            <span class="badge bg-danger position-absolute top-0 end-0 m-2">-<?php echo $discounts[$row['item_id']]; ?>%</span>
+                        <?php endif; ?>
                         <img src="../assets/images/<?php echo htmlspecialchars($row['image_url'] ?? 'default.jpg'); ?>" alt="Food" id="food-img">
                         <div class="food-details">
                             <h4><?php echo htmlspecialchars($row['name'] ?? 'Unknown'); ?></h4>
                             <div class="price-row">
-                                <span>৳<?php echo htmlspecialchars($row['price'] ?? '0'); ?></span>
+                                <span>
+                                    <?php if($has_discount): ?>
+                                        <del class="text-muted small">৳<?php echo $original_price; ?></del> 
+                                    <?php endif; ?>
+                                    ৳<?php echo number_format($final_price, 0); ?>
+                                </span>
                                 <form action="add_to_cart.php" method="POST" style="margin:0;">
                                     <input type="hidden" name="menu_item_id" value="<?php echo htmlspecialchars($row['item_id'] ?? 0); ?>">
                                     <input type="hidden" name="quantity" value="1">
-                                    <button type="submit" class="plus-button btn btn-light">+</button>
+                                    <button type="<?php echo $btn_type; ?>" class="plus-button btn btn-light" <?php echo $btn_disabled; ?>>+</button>
                                 </form>
                             </div>
+                            <?php if ($is_avail == 0): ?>
+                                <small class="text-danger d-block text-center mt-1" style="font-size: 0.7rem; font-weight: bold;">Currently Unavailable</small>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <?php
@@ -114,8 +181,46 @@ require_once '../includes/db.php';
         </div>
     </div>
 
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-
+    <?php
+    // Fetch active order for widget
+    $active_order = null;
+    $res = mysqli_query($conn, "SELECT * FROM orders WHERE user_id = ".intval($_SESSION['user_id'])." AND status IN ('Pending', 'Preparing', 'Ready') ORDER BY order_id DESC LIMIT 1");
+    if($res && mysqli_num_rows($res) > 0) {
+        $active_order = mysqli_fetch_assoc($res);
+    }
+    ?>
+    <?php if ($active_order): ?>
+    <a href="order_tracking.php?order_id=<?php echo $active_order['order_id']; ?>" class="floating-widget">
+        <div class="d-flex align-items-center">
+            <div class="widget-icon"><i class="bi bi-bicycle"></i></div>
+            <div class="ms-3 text-start">
+                <small class="d-block text-uppercase fw-bold text-success" style="font-size:0.7rem; letter-spacing:1px;">Tracking Active Order</small>
+                <strong class="text-dark">Order #<?php echo $active_order['order_id']; ?> • <?php echo $active_order['status']; ?></strong>
+            </div>
+            <i class="bi bi-chevron-right ms-auto text-muted"></i>
+        </div>
+    </a>
+    <?php endif; ?>
+    <!-- Delete Account Confirmation Modal -->
+<div class="modal fade" id="deleteAccountModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Delete Account</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to <strong class="text-danger">permanently deactivate</strong> your account?</p>
+                <p>Your order history will be kept for administrative purposes, but you will no longer be able to log in or place orders.</p>
+                <p class="mb-0">This action <strong>cannot be undone</strong> unless you contact support.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="delete_account.php" class="btn btn-danger">Yes, Delete My Account</a>
+            </div>
+        </div>
+    </div>
+</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
